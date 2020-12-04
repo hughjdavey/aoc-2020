@@ -29,4 +29,14 @@ class UtilsTest {
         assertThat(Triple(4, 4, 4).add(), `is`(12))
         assertThat(Triple(4, 4, 4).mul(), `is`(64))
     }
+
+    @Test
+    fun testIsIntAndInRange() {
+        assertThat("".isIntAndInRange(5, 10), `is`(false))
+        assertThat("11".isIntAndInRange(5, 10), `is`(false))
+        assertThat("5cm".isIntAndInRange(5, 10), `is`(false))
+        assertThat("5".isIntAndInRange(5, 10), `is`(true))
+        assertThat("7".isIntAndInRange(5, 10), `is`(true))
+        assertThat("10".isIntAndInRange(5, 10), `is`(true))
+    }
 }

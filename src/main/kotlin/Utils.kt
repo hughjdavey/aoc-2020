@@ -9,3 +9,8 @@ fun Pair<Int, Int>.mul() = this.first * this.second
 fun Triple<Int, Int, Int>.add() = this.first + this.second + this.third
 
 fun Triple<Int, Int, Int>.mul() = this.first * this.second * this.third
+
+fun String.isIntAndInRange(start: Int, end: Int): Boolean {
+    val maybeInt = this.toIntOrNull() ?: return false
+    return maybeInt in start..end
+}
