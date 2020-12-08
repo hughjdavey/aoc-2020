@@ -22,6 +22,7 @@ class Day6Test {
     }
 
     @Test
+    @Suppress("UNCHECKED_CAST")
     fun testGroupParsing() {
         val field = Day6::class.java.getDeclaredField("groups")
         field.isAccessible = true
