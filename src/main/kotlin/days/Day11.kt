@@ -59,16 +59,10 @@ class Day11 : Day(11) {
         }
 
         fun getAdjacentSeats(x: Int, y: Int): List<Char> {
-            val foo = directionFunctions.map { f ->
-                var coord = f(x, y)
-                var adj = get(coord)
-                while (adj == '.' && adj != ' ') {
-                    coord = f(coord.first, coord.second)
-                    adj = get(coord)
-                }
-                adj
-            }
-            return foo.filterNot { it == ' ' }
+            // doing as a sequence inspired by https://github.com/paulBee/AdventOfKotlin/blob/master/src/main/kotlin/year2020/day11.kt
+            return directionFunctions.map { f ->
+                generateSequence(f(x, y)) { coord -> f(coord.first, coord.second) }.map { get(it) }.find { it != '.' }!!
+            }.filterNot { it == ' ' }
         }
 
         fun numberOccupied(): Int {
@@ -81,17 +75,11 @@ class Day11 : Day(11) {
 
         companion object {
 
-            // left, up-left, up, up-right, right, down-right, down, down-left
-            private val l = { x: Int, y: Int -> x - 1 to y }
-            private val ul = { x: Int, y: Int -> x - 1 to y - 1 }
-            private val u = { x: Int, y: Int -> x to y - 1 }
-            private val ur = { x: Int, y: Int -> x + 1 to y - 1 }
-            private val r = { x: Int, y: Int -> x + 1 to y }
-            private val dr = { x: Int, y: Int -> x + 1 to y + 1 }
-            private val d = { x: Int, y: Int -> x to y + 1 }
-            private val dl = { x: Int, y: Int -> x - 1 to y + 1 }
-
-            val directionFunctions = listOf(l, ul, u, ur, r, dr, d, dl)
+            // inspired by `allDirections` in https://github.com/paulBee/AdventOfKotlin/blob/master/src/main/kotlin/year2020/day11.kt
+            // resolves to a list of functions for each of the 8 possible adjacent moves
+            val directionFunctions = (-1..1).flatMap { y -> (-1..1).map { x -> x to y } }
+                .filterNot { (x, y) -> x == 0 && y == 0 }
+                .map { (dx, dy) -> { x: Int, y: Int -> x + dx to y + dy } }
         }
     }
 }
