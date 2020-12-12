@@ -1,3 +1,5 @@
+import kotlin.math.abs
+
 fun <T> List<T>.allPairs(): List<Pair<T, T>> = this.flatMap { i -> this.map { j -> Pair(i, j) } }
 
 fun <T> List<T>.allTriples(): List<Triple<T, T, T>> = this.flatMap { i -> this.flatMap { j ->  this.map { k -> Triple(i, j, k) } } }
@@ -13,4 +15,56 @@ fun Triple<Int, Int, Int>.mul() = this.first * this.second * this.third
 fun String.isIntAndInRange(start: Int, end: Int): Boolean {
     val maybeInt = this.toIntOrNull() ?: return false
     return maybeInt in start..end
+}
+
+enum class Direction {
+    NORTH, EAST, SOUTH, WEST;
+
+    fun rotate(degrees: Int): Direction {
+        if (abs(degrees) !in listOf(0, 90, 180, 270, 360)) {
+            throw IllegalArgumentException("Valid rotations are +/- 0, 90, 180, 270 and 360")
+        }
+        var newIndex = values().indexOf(this) + (degrees / 90)
+        while (newIndex < 0) newIndex += 4
+        return values()[newIndex % 4]
+    }
+}
+
+data class Coord(val x: Int, val y: Int) {
+
+    fun plusX(delta: Int) = copy(x = x + delta)
+    fun minusX(delta: Int) = copy(x = x - delta)
+    fun plusY(delta: Int) = copy(y = y + delta)
+    fun minusY(delta: Int) = copy(y = y - delta)
+
+    fun absSum() = abs(x) + abs(y)
+
+    fun diff(from: Coord = Coord(0, 0)): Coord {
+        return Coord(x - from.x, y - from.y)
+    }
+
+    fun manhattan(from: Coord = Coord(0, 0)): Int {
+        return diff(from).absSum()
+    }
+
+    fun rotate(axis: Coord, degrees: Int): Coord {
+        if (abs(degrees) == 360) {
+            return this
+        }
+
+        val diff = diff(axis)
+        if (abs(degrees) == 180) {
+            return axis.minusX(diff.x).minusY(diff.y)
+        }
+
+        return if (degrees == 90 || degrees == -270) {
+            copy(x = axis.x + diff.y, y = axis.y - diff.x)
+        }
+        else if (degrees == -90 || degrees == 270) {
+            copy(x = axis.x - diff.y, y = axis.y + diff.x)
+        }
+        else {
+            throw IllegalArgumentException("Valid rotations are +/- 0, 90, 180, 270 and 360")
+        }
+    }
 }
