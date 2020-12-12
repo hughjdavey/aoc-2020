@@ -2,40 +2,51 @@ package days
 
 class Day7 : Day(7) {
 
-    private val bags = Bag.fromStrings(inputList)
+    private val bags = Bag.createBags(inputList)
+    private val bagColour = "shiny gold"
 
     // 289
     override fun partOne(): Any {
-        return Bag.canContain("shiny gold", bags)
+        return bags.count { Bag.canContain(it, bagColour) }
     }
 
     // 30055
     override fun partTwo(): Any {
-        return Bag.mustContain(bags.find { it.colour == "shiny gold" }!!, bags)
+        return Bag.mustContain(Bag.fromColour(bagColour))
     }
 
     data class Bag(val colour: String, val children: List<String> = mutableListOf()) {
 
         companion object {
 
-            // todo rewrite in more functional style!
-            fun canContain(colour: String, bags: List<Bag>): Int {
-                var oldLen: Int
-                val colours = mutableSetOf(colour)
-                do {
-                    oldLen = colours.size
-                    colours.addAll(bags.filter { it.children.any { colours.contains(it) } }.map { it.colour })
-                } while (oldLen != colours.size)
-                return colours.minus(colour).size
-            }
+            private lateinit var bags: List<Bag>
 
-            fun mustContain(bag: Bag, bags: List<Bag>, count: Int = 0): Int {
-                return if (bag.children.isEmpty()) count else {
-                    bag.children.count() + bag.children.map { mustContain(bags.find { b -> b.colour == it }!!, bags, count) }.sum()
+            fun canContain(bag: Bag, colour: String): Boolean {
+                return if (bag.children.isEmpty()) false else {
+                    bag.children.contains(colour) || fromColours(bag.children).any { canContain(it, colour) }
                 }
             }
 
-            fun fromStrings(strings: List<String>): List<Bag> {
+            fun mustContain(bag: Bag, count: Int = 0): Int {
+                return if (bag.children.isEmpty()) count else {
+                    bag.children.count() + bag.children.map { mustContain(fromColour(it), count) }.sum()
+                }
+            }
+
+            fun createBags(strings: List<String>): List<Bag> {
+                bags = fromStrings(strings)
+                return bags
+            }
+
+            fun fromColour(colour: String): Bag {
+                return bags.find { b -> b.colour == colour }!!
+            }
+
+            private fun fromColours(colours: List<String>): List<Bag> {
+                return bags.filter { colours.contains(it.colour) }
+            }
+
+            private fun fromStrings(strings: List<String>): List<Bag> {
                 return strings.map { it.replace(Regex("bags?|[.]"), "").split("contain").map { it.trim() } }
                     .fold(listOf()) { bags, str ->
                         val (colour, children) = str[0] to str[1].split(" , ").mapNotNull { if (it == "no other") null else {
