@@ -48,23 +48,13 @@ data class Coord(val x: Int, val y: Int) {
     }
 
     fun rotate(axis: Coord, degrees: Int): Coord {
-        if (abs(degrees) == 360) {
-            return this
-        }
-
-        val diff = diff(axis)
-        if (abs(degrees) == 180) {
-            return axis.minusX(diff.x).minusY(diff.y)
-        }
-
-        return if (degrees == 90 || degrees == -270) {
-            copy(x = axis.x + diff.y, y = axis.y - diff.x)
-        }
-        else if (degrees == -90 || degrees == 270) {
-            copy(x = axis.x - diff.y, y = axis.y + diff.x)
-        }
-        else {
-            throw IllegalArgumentException("Valid rotations are +/- 0, 90, 180, 270 and 360")
+        val diff: Coord by lazy { diff(axis) }
+        return when (degrees) {
+            360, -360 -> copy()
+            180, -180 -> axis.minusX(diff.x).minusY(diff.y)
+            90, -270 -> copy(x = axis.x + diff.y, y = axis.y - diff.x)
+            -90, 270 -> copy(x = axis.x - diff.y, y = axis.y + diff.x)
+            else -> throw IllegalArgumentException("Valid rotations are +/- 0, 90, 180, 270 and 360")
         }
     }
 }
