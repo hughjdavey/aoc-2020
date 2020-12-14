@@ -2,6 +2,7 @@ package days
 
 class Day13 : Day(13) {
 
+    // 3606
     override fun partOne(): Any {
         val timestamp = inputList.first().toInt()
         val buses = inputList.last().split(",").mapNotNull { it.toIntOrNull() }.map { Bus(it) }
@@ -14,6 +15,7 @@ class Day13 : Day(13) {
         return bus?.let { (it.time - timestamp) * it.id } ?: 0
     }
 
+    // 379786358533423
     override fun partTwo(): Any {
         return offsetDepartures(inputList.last().split(","))
     }
