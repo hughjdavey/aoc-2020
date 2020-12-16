@@ -58,3 +58,16 @@ data class Coord(val x: Int, val y: Int) {
         }
     }
 }
+
+fun List<String>.splitOnBlank(): List<List<String>> {
+    val lists = mutableListOf(mutableListOf<String>())
+    for (str in this) {
+        if (str.isBlank()) {
+            lists.add(mutableListOf())
+        }
+        else {
+            lists.last().add(str)
+        }
+    }
+    return lists
+}

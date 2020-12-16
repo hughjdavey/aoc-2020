@@ -1,5 +1,6 @@
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder
+import org.hamcrest.collection.IsIterableContainingInOrder.contains
 import org.hamcrest.core.Is.`is`
 import org.junit.Test
 
@@ -87,5 +88,13 @@ class UtilsTest {
         assertThat(Coord(-4, -4).manhattan(), `is`(8))
         assertThat(Coord(-6, 2).manhattan(), `is`(8))
         assertThat(Coord(-6, 2).manhattan(Coord(16, -8)), `is`(32))
+    }
+
+    @Test
+    fun testSplitOnBlank() {
+        assertThat(listOf("1", "", "2", "", "3").splitOnBlank(), contains(listOf("1"), listOf("2"), listOf("3")))
+        assertThat(listOf("1", "\n", "2", "\n", "3").splitOnBlank(), contains(listOf("1"), listOf("2"), listOf("3")))
+        assertThat(listOf("1", "\n\n", "2", "\n\n", "3").splitOnBlank(), contains(listOf("1"), listOf("2"), listOf("3")))
+        assertThat(listOf("names", "alice", "bob", "\n", "ages", "24", "36").splitOnBlank(), contains(listOf("names", "alice", "bob"), listOf("ages", "24", "36")))
     }
 }
