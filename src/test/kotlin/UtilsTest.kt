@@ -1,4 +1,5 @@
 import org.hamcrest.MatcherAssert.assertThat
+import org.hamcrest.collection.IsCollectionWithSize.hasSize
 import org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder
 import org.hamcrest.collection.IsIterableContainingInOrder.contains
 import org.hamcrest.core.Is.`is`
@@ -96,5 +97,20 @@ class UtilsTest {
         assertThat(listOf("1", "\n", "2", "\n", "3").splitOnBlank(), contains(listOf("1"), listOf("2"), listOf("3")))
         assertThat(listOf("1", "\n\n", "2", "\n\n", "3").splitOnBlank(), contains(listOf("1"), listOf("2"), listOf("3")))
         assertThat(listOf("names", "alice", "bob", "\n", "ages", "24", "36").splitOnBlank(), contains(listOf("names", "alice", "bob"), listOf("ages", "24", "36")))
+    }
+
+    @Test
+    fun testStackOf() {
+        val stackFromList = stackOf(listOf(1, 2, 3))
+        assertThat(stackFromList, hasSize(3))
+        assertThat(stackFromList.pop(), `is`(1))
+        assertThat(stackFromList.pop(), `is`(2))
+        assertThat(stackFromList.pop(), `is`(3))
+
+        val stackFromVarargs = stackOf(9, 18, 27)
+        assertThat(stackFromVarargs, hasSize(3))
+        assertThat(stackFromVarargs.pop(), `is`(9))
+        assertThat(stackFromVarargs.pop(), `is`(18))
+        assertThat(stackFromVarargs.pop(), `is`(27))
     }
 }

@@ -1,3 +1,4 @@
+import java.util.Stack
 import kotlin.math.abs
 
 fun <T> List<T>.allPairs(): List<Pair<T, T>> = this.flatMap { i -> this.map { j -> Pair(i, j) } }
@@ -70,4 +71,14 @@ fun List<String>.splitOnBlank(): List<List<String>> {
         }
     }
     return lists
+}
+
+fun <T> stackOf(input: List<T>): Stack<T> {
+    val stack = Stack<T>()
+    input.reversed().forEach { stack.push(it) }
+    return stack
+}
+
+fun <T> stackOf(vararg input: T): Stack<T> {
+    return stackOf(input.toList())
 }

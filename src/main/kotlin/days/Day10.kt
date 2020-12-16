@@ -15,7 +15,7 @@ class Day10 : Day(10) {
 
     // 32396521357312
     override fun partTwo(): Any {
-        return countAdapterArrangementsChunked()
+        return countAdapterArrangementsFast()
     }
 
     fun countJoltDifferences(diff: Int): Int {
@@ -32,7 +32,7 @@ class Day10 : Day(10) {
     }
 
     // inspired by https://www.reddit.com/r/adventofcode/comments/kacdbl/2020_day_10c_part_2_no_clue_how_to_begin/gf9lzhd/
-    fun countAdapterArrangementsChunked(): Long {
+    fun countAdapterArrangementsFast(): Long {
         val ratingsToPaths = ratings.mapIndexed { i, n -> if (i == 0) RatingToPath(n, 1L) else RatingToPath(n) }.toList()
         ratingsToPaths.forEach { r2p ->
             r2p.reachableRatings().forEach { rating -> ratingsToPaths.ifExistsWithRating(rating) { it.paths += r2p.paths } }

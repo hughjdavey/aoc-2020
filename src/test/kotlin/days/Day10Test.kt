@@ -34,10 +34,10 @@ class Day10Test {
     fun testCountAdapterArrangements() {
         injectExample(exampleOne)
         assertThat(dayTen.countAdapterArrangements(), `is`(8))
-        assertThat(dayTen.countAdapterArrangementsChunked(), `is`(8L))
+        assertThat(dayTen.countAdapterArrangementsFast(), `is`(8L))
         injectExample(exampleTwo)
         assertThat(dayTen.countAdapterArrangements(), `is`(19208))
-        assertThat(dayTen.countAdapterArrangementsChunked(), `is`(19208L))
+        assertThat(dayTen.countAdapterArrangementsFast(), `is`(19208L))
     }
 
     private fun injectExample(example: List<Int>) {
