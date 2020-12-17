@@ -61,34 +61,34 @@ class UtilsTest {
 
     @Test
     fun testCoordRotate() {
-        val axis = Coord(170, 38)
-        assertThat(Coord(180, 42).rotate(axis, 90), `is`(Coord(174, 28)))
-        assertThat(Coord(180, 42).rotate(axis, 180), `is`(Coord(160, 34)))
-        assertThat(Coord(180, 42).rotate(axis, 270), `is`(Coord(166, 48)))
-        assertThat(Coord(180, 42).rotate(axis, 360), `is`(Coord(180, 42)))
+        val axis = Coord2(170, 38)
+        assertThat(Coord2(180, 42).rotate(axis, 90), `is`(Coord2(174, 28)))
+        assertThat(Coord2(180, 42).rotate(axis, 180), `is`(Coord2(160, 34)))
+        assertThat(Coord2(180, 42).rotate(axis, 270), `is`(Coord2(166, 48)))
+        assertThat(Coord2(180, 42).rotate(axis, 360), `is`(Coord2(180, 42)))
 
-        val axis2 = Coord(0, 0)
-        assertThat(Coord(0, 5).rotate(axis2, -90), `is`(Coord(-5, 0)))
-        assertThat(Coord(0, 5).rotate(axis2, -180), `is`(Coord(0, -5)))
-        assertThat(Coord(0, 5).rotate(axis2, -270), `is`(Coord(5, 0)))
-        assertThat(Coord(0, 5).rotate(axis2, 180).rotate(axis2, 180), `is`(Coord(0, 5)))
+        val axis2 = Coord2(0, 0)
+        assertThat(Coord2(0, 5).rotate(axis2, -90), `is`(Coord2(-5, 0)))
+        assertThat(Coord2(0, 5).rotate(axis2, -180), `is`(Coord2(0, -5)))
+        assertThat(Coord2(0, 5).rotate(axis2, -270), `is`(Coord2(5, 0)))
+        assertThat(Coord2(0, 5).rotate(axis2, 180).rotate(axis2, 180), `is`(Coord2(0, 5)))
     }
 
     @Test(expected = IllegalArgumentException::class)
     fun testCoordRotateInvalid() {
-        Coord(1, 2).rotate(Coord(3, 4), 48)
+        Coord2(1, 2).rotate(Coord2(3, 4), 48)
     }
 
     @Test
     fun testCoordDiffAndManhattan() {
-        assertThat(Coord(4, 4).diff(), `is`(Coord(4, 4)))
-        assertThat(Coord(-4, -4).diff(), `is`(Coord(-4, -4)))
-        assertThat(Coord(-4, -4).diff(Coord(-2, 2)), `is`(Coord(-2, -6)))
+        assertThat(Coord2(4, 4).diff(), `is`(Coord2(4, 4)))
+        assertThat(Coord2(-4, -4).diff(), `is`(Coord2(-4, -4)))
+        assertThat(Coord2(-4, -4).diff(Coord2(-2, 2)), `is`(Coord2(-2, -6)))
 
-        assertThat(Coord(4, 4).manhattan(), `is`(8))
-        assertThat(Coord(-4, -4).manhattan(), `is`(8))
-        assertThat(Coord(-6, 2).manhattan(), `is`(8))
-        assertThat(Coord(-6, 2).manhattan(Coord(16, -8)), `is`(32))
+        assertThat(Coord2(4, 4).manhattan(), `is`(8))
+        assertThat(Coord2(-4, -4).manhattan(), `is`(8))
+        assertThat(Coord2(-6, 2).manhattan(), `is`(8))
+        assertThat(Coord2(-6, 2).manhattan(Coord2(16, -8)), `is`(32))
     }
 
     @Test
@@ -112,5 +112,12 @@ class UtilsTest {
         assertThat(stackFromVarargs.pop(), `is`(9))
         assertThat(stackFromVarargs.pop(), `is`(18))
         assertThat(stackFromVarargs.pop(), `is`(27))
+    }
+
+    @Test
+    fun testCoordAdjacent() {
+        assertThat(Coord2(0, 0).getAdjacent(), hasSize(8))
+        assertThat(Coord3(0, 0, 0).getAdjacent(), hasSize(26))
+        assertThat(Coord4(0, 0, 0, 0).getAdjacent(), hasSize(80))
     }
 }

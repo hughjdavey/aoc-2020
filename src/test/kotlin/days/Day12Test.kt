@@ -1,6 +1,6 @@
 package days
 
-import Coord
+import Coord2
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.core.Is.`is`
 import org.junit.Test
@@ -24,22 +24,22 @@ class Day12Test {
     @Test
     fun testPartOneExample() {
         val ship = Day12.Ship(false)
-        assertThat(ship.position, `is`(Coord(0, 0)))
-        assertThat(ship.respond(instructions[0]).position, `is`(Coord(10, 0)))
-        assertThat(ship.respond(instructions[1]).position, `is`(Coord(10, 3)))
-        assertThat(ship.respond(instructions[2]).position, `is`(Coord(17, 3)))
-        assertThat(ship.respond(instructions[3]).position, `is`(Coord(17, 3)))
-        assertThat(ship.respond(instructions[4]).position, `is`(Coord(17, -8)))
+        assertThat(ship.position, `is`(Coord2(0, 0)))
+        assertThat(ship.respond(instructions[0]).position, `is`(Coord2(10, 0)))
+        assertThat(ship.respond(instructions[1]).position, `is`(Coord2(10, 3)))
+        assertThat(ship.respond(instructions[2]).position, `is`(Coord2(17, 3)))
+        assertThat(ship.respond(instructions[3]).position, `is`(Coord2(17, 3)))
+        assertThat(ship.respond(instructions[4]).position, `is`(Coord2(17, -8)))
     }
 
     @Test
     fun testPartTwoExample() {
         val ship = Day12.Ship(true)
-        assertThat(ship.position, `is`(Coord(0, 0)))
-        assertThat(ship.respond(instructions[0]).position, `is`(Coord(100, 10)))
-        assertThat(ship.respond(instructions[1]).position, `is`(Coord(100, 10)))
-        assertThat(ship.respond(instructions[2]).position, `is`(Coord(170, 38)))
-        assertThat(ship.respond(instructions[3]).position, `is`(Coord(170, 38)))
-        assertThat(ship.respond(instructions[4]).position, `is`(Coord(214, -72)))
+        assertThat(ship.position, `is`(Coord2(0, 0)))
+        assertThat(ship.respond(instructions[0]).position, `is`(Coord2(100, 10)))
+        assertThat(ship.respond(instructions[1]).position, `is`(Coord2(100, 10)))
+        assertThat(ship.respond(instructions[2]).position, `is`(Coord2(170, 38)))
+        assertThat(ship.respond(instructions[3]).position, `is`(Coord2(170, 38)))
+        assertThat(ship.respond(instructions[4]).position, `is`(Coord2(214, -72)))
     }
 }

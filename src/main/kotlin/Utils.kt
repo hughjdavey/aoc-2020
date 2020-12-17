@@ -31,7 +31,12 @@ enum class Direction {
     }
 }
 
-data class Coord(val x: Int, val y: Int) {
+// todo implement getAdjacent here
+interface Coord {
+    fun getAdjacent(): List<Coord>
+}
+
+data class Coord2(val x: Int, val y: Int) : Coord {
 
     fun plusX(delta: Int) = copy(x = x + delta)
     fun minusX(delta: Int) = copy(x = x - delta)
@@ -40,16 +45,16 @@ data class Coord(val x: Int, val y: Int) {
 
     fun absSum() = abs(x) + abs(y)
 
-    fun diff(from: Coord = Coord(0, 0)): Coord {
-        return Coord(x - from.x, y - from.y)
+    fun diff(from: Coord2 = Coord2(0, 0)): Coord2 {
+        return Coord2(x - from.x, y - from.y)
     }
 
-    fun manhattan(from: Coord = Coord(0, 0)): Int {
+    fun manhattan(from: Coord2 = Coord2(0, 0)): Int {
         return diff(from).absSum()
     }
 
-    fun rotate(axis: Coord, degrees: Int): Coord {
-        val diff: Coord by lazy { diff(axis) }
+    fun rotate(axis: Coord2, degrees: Int): Coord2 {
+        val diff: Coord2 by lazy { diff(axis) }
         return when (degrees) {
             360, -360 -> copy()
             180, -180 -> axis.minusX(diff.x).minusY(diff.y)
@@ -57,6 +62,10 @@ data class Coord(val x: Int, val y: Int) {
             -90, 270 -> copy(x = axis.x - diff.y, y = axis.y + diff.x)
             else -> throw IllegalArgumentException("Valid rotations are +/- 0, 90, 180, 270 and 360")
         }
+    }
+
+    override fun getAdjacent(): List<Coord> {
+        return (-1..1).flatMap { y -> (-1..1).map { x -> Coord2(x, y) } }.filterNot { it == this }
     }
 }
 
@@ -81,4 +90,22 @@ fun <T> stackOf(input: List<T>): Stack<T> {
 
 fun <T> stackOf(vararg input: T): Stack<T> {
     return stackOf(input.toList())
+}
+
+data class Coord3(val x: Int, val y: Int, val z: Int) : Coord {
+
+    override fun getAdjacent(): List<Coord3> {
+        return (-1..1).flatMap { dz -> (-1..1).flatMap { dy -> (-1..1).map { dx ->
+            copy(x = x + dx, y = y + dy, z = z + dz)
+        } } }.filterNot { it == this }
+    }
+}
+
+data class Coord4(val x: Int, val y: Int, val z: Int, val w: Int): Coord {
+
+    override fun getAdjacent(): List<Coord4> {
+        return (-1..1).flatMap { dz -> (-1..1).flatMap { dy -> (-1..1).flatMap { dx -> (-1..1).map { dw ->
+            copy(x = x + dx, y = y + dy, z = z + dz, w = w + dw)
+        } } } }.filterNot { it == this }
+    }
 }

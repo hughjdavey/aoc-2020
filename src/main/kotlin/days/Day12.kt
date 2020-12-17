@@ -1,6 +1,6 @@
 package days
 
-import Coord
+import Coord2
 import Direction
 
 class Day12 : Day(12) {
@@ -20,9 +20,9 @@ class Day12 : Day(12) {
     class Ship(private val usesWaypoint: Boolean) {
 
         private var direction = Direction.EAST
-        private var waypoint = Coord(10, 1)
+        private var waypoint = Coord2(10, 1)
 
-        var position = Coord(0, 0)
+        var position = Coord2(0, 0)
 
         fun followInstructions(instructions: List<Instruction>): Ship {
             return instructions.fold(this) { ship, ins -> ship.respond(ins) }
@@ -40,10 +40,10 @@ class Day12 : Day(12) {
 
         private fun setPos(instruction: Instruction) {
             val func = when (instruction.action) {
-                'N' -> { c: Coord -> c.plusY(instruction.value) }
-                'E' -> { c: Coord -> c.plusX(instruction.value) }
-                'S' -> { c: Coord -> c.minusY(instruction.value) }
-                'W' -> { c: Coord -> c.minusX(instruction.value) }
+                'N' -> { c: Coord2 -> c.plusY(instruction.value) }
+                'E' -> { c: Coord2 -> c.plusX(instruction.value) }
+                'S' -> { c: Coord2 -> c.minusY(instruction.value) }
+                'W' -> { c: Coord2 -> c.minusX(instruction.value) }
                 else -> throw IllegalArgumentException()
             }
 
@@ -63,7 +63,7 @@ class Day12 : Day(12) {
             if (usesWaypoint) {
                 val diff = waypoint.diff(position)
                 position = position.plusX(diff.x * units).plusY(diff.y * units)
-                waypoint = Coord(position.x + diff.x, position.y + diff.y)
+                waypoint = Coord2(position.x + diff.x, position.y + diff.y)
             }
             else {
                 setPos(Instruction(direction.name.first(), units))
