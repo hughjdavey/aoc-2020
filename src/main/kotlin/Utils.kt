@@ -65,7 +65,7 @@ data class Coord2(val x: Int, val y: Int) : Coord {
     }
 
     override fun getAdjacent(): List<Coord> {
-        return (-1..1).flatMap { y -> (-1..1).map { x -> Coord2(x, y) } }.filterNot { it == this }
+        return (-1..1).flatMap { dy -> (-1..1).map { dx -> copy(x = x + dx, y = y + dy) } }.filterNot { it == this }
     }
 }
 
