@@ -5,10 +5,12 @@ class Day21 : Day(21) {
     private val foods = parseFoods()
     private val unsafeIngredients = findUnsafeIngredients(foods)
 
+    // 2125
     override fun partOne(): Any {
         return foods.map { it.ingredients }.flatten().count { it !in unsafeIngredients.values }
     }
 
+    // phc,spnd,zmsdzh,pdt,fqqcnm,lsgqf,rjc,lzvh
     override fun partTwo(): Any {
         return unsafeIngredients.entries.sortedBy { it.key }.joinToString(",") { it.value }
     }
